@@ -1,18 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ProjectCard } from '@/components/project-card';
 import { FundProjectDialog } from '@/components/fund-project-dialog';
-import { lemonSDK } from '@/lib/lemon-sdk-mock';
-import { getProjects } from '@/lib/storage';
 import { Project } from '@/lib/types';
+import { getProjects } from '@/lib/storage';
+import { lemonSDK } from '@/lib/lemon-sdk-mock';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, Plus, Heart } from 'lucide-react';
+import Link from 'next/link';
 
-export default function Home() {
+export default function MyProjectsPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -43,7 +43,10 @@ export default function Home() {
   }, []);
 
   const loadProjects = () => {
-    setProjects(getProjects());
+    // TODO: Filtrar proyectos por el usuario autenticado
+    // Por ahora mostramos todos
+    const allProjects = getProjects();
+    setProjects(allProjects);
   };
 
   const handleFundProject = (project: Project) => {
@@ -81,7 +84,7 @@ export default function Home() {
           </Alert>
           <Button 
             onClick={() => window.location.reload()}
-            className="w-full bg-secondary text-black hover:bg-secondary"
+            className="w-full bg-secondary text-black hover:bg-[#00B85C]"
           >
             Reintentar Conexión
           </Button>
@@ -90,18 +93,17 @@ export default function Home() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background pb-20">
-      <main className="px-4 pt-6">
-        {/* Título simple */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground mb-1">
-            Proyectos
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Apoyá proyectos increíbles
-          </p>
-        </div>
+    return (
+      <div className="min-h-screen bg-background pb-24">
+        <main className="px-4 pt-6">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-foreground mb-1">
+              Mis Proyectos
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Proyectos que creaste
+            </p>
+          </div>
 
         {/* Lista de Proyectos */}
         {projects.length === 0 ? (
@@ -110,14 +112,20 @@ export default function Home() {
               <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Heart className="h-8 w-8 text-secondary" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">No hay proyectos</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">No tenés proyectos</h3>
               <p className="text-sm text-muted-foreground mb-6">
-                Sé el primero en crear un proyecto
+                Creá tu primer proyecto de crowdfunding
               </p>
+              <Link href="/projects/new">
+                <Button className="bg-secondary text-black hover:bg-[#00B85C]">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Crear Proyecto
+                </Button>
+              </Link>
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-4 pb-4">
             {projects.map((project) => (
               <ProjectCard
                 key={project.id}
@@ -127,19 +135,6 @@ export default function Home() {
             ))}
           </div>
         )}
-
-        {/* Botón Crear Proyecto - Abajo de la lista */}
-        <div className="mt-8 pb-4">
-          <Link href="/projects/new">
-            <Button 
-              variant="outline" 
-              className="w-full h-14 border-dashed border-2 border-border hover:border-secondary hover:bg-secondary/5 transition-colors"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              <span>Crear Nuevo Proyecto</span>
-            </Button>
-          </Link>
-        </div>
       </main>
 
       {/* Fund Dialog */}
@@ -152,3 +147,4 @@ export default function Home() {
     </div>
   );
 }
+

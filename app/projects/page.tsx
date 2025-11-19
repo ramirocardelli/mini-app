@@ -5,14 +5,14 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ProjectCard } from '@/components/project-card';
 import { FundProjectDialog } from '@/components/fund-project-dialog';
-import { lemonSDK } from '@/lib/lemon-sdk-mock';
-import { getProjects } from '@/lib/storage';
 import { Project } from '@/lib/types';
+import { getProjects } from '@/lib/storage';
+import { lemonSDK } from '@/lib/lemon-sdk-mock';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, Plus, Heart } from 'lucide-react';
+import { AlertCircle, Plus, Wallet, ArrowLeft } from 'lucide-react';
 
-export default function Home() {
+export default function ProjectsPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -57,12 +57,12 @@ export default function Home() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
         <div className="text-center space-y-4">
           <Spinner className="h-12 w-12 text-secondary mx-auto" />
           <div>
-            <h2 className="text-xl font-semibold text-foreground">Conectando con LemonCash</h2>
-            <p className="text-sm text-muted-foreground mt-2">Autenticando tu sesión...</p>
+            <h2 className="text-xl font-semibold text-foreground">Connecting to LemonCash</h2>
+            <p className="text-sm text-muted-foreground mt-2">Authenticating your session...</p>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function Home() {
 
   if (authError) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
         <div className="max-w-md w-full space-y-4">
           <Alert variant="destructive" className="border-destructive/50">
             <AlertCircle className="h-4 w-4" />
@@ -81,9 +81,9 @@ export default function Home() {
           </Alert>
           <Button 
             onClick={() => window.location.reload()}
-            className="w-full bg-secondary text-black hover:bg-secondary"
+            className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
           >
-            Reintentar Conexión
+            Retry Connection
           </Button>
         </div>
       </div>
@@ -91,33 +91,38 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <main className="px-4 pt-6">
-        {/* Título simple */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground mb-1">
-            Proyectos
-          </h1>
+    <div className="min-h-screen bg-background">
+      <main className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-balance mb-2">
+            Todos los Proyectos
+          </h2>
           <p className="text-sm text-muted-foreground">
-            Apoyá proyectos increíbles
+            Descubre proyectos increíbles y apóyalos con LemonCash
           </p>
         </div>
 
-        {/* Lista de Proyectos */}
+        {/* Projects Grid */}
         {projects.length === 0 ? (
           <div className="text-center py-16 px-4">
-            <div className="bg-card border border-border rounded-2xl p-8 max-w-sm mx-auto">
+            <div className="bg-card border borhrefder-border rounded-lg p-8 max-w-md mx-auto">
               <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Heart className="h-8 w-8 text-secondary" />
+                <Wallet className="h-8 w-8 text-secondary" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">No hay proyectos</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">No Hay Proyectos</h3>
               <p className="text-sm text-muted-foreground mb-6">
-                Sé el primero en crear un proyecto
+                Aún no hay proyectos disponibles. ¡Sé el primero en crear uno!
               </p>
+              <Link href="/projects/new">
+                <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Crear Primer Proyecto
+                </Button>
+              </Link>
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
               <ProjectCard
                 key={project.id}
@@ -127,19 +132,6 @@ export default function Home() {
             ))}
           </div>
         )}
-
-        {/* Botón Crear Proyecto - Abajo de la lista */}
-        <div className="mt-8 pb-4">
-          <Link href="/projects/new">
-            <Button 
-              variant="outline" 
-              className="w-full h-14 border-dashed border-2 border-border hover:border-secondary hover:bg-secondary/5 transition-colors"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              <span>Crear Nuevo Proyecto</span>
-            </Button>
-          </Link>
-        </div>
       </main>
 
       {/* Fund Dialog */}
@@ -152,3 +144,4 @@ export default function Home() {
     </div>
   );
 }
+
