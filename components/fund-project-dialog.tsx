@@ -100,7 +100,7 @@ export function FundProjectDialog({ project, open, onOpenChange, onSuccess }: Fu
             <div className="space-y-3 p-4 rounded-xl bg-muted/30 border border-border/50">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Actual</span>
-                <span className="text-base font-semibold text-[#00D26B]">
+                <span className="text-base font-semibold text-secondary">
                   ${project.currentAmount.toFixed(0)} ARS
                 </span>
               </div>
@@ -146,7 +146,7 @@ export function FundProjectDialog({ project, open, onOpenChange, onSuccess }: Fu
         <DialogFooter className="flex-col gap-3 sm:gap-3">
           <Button
             onClick={handleFund}
-            className="w-full h-12 bg-[#00D26B] text-black hover:bg-[#00B85C] font-semibold text-base"
+            className="w-full h-12 bg-secondary text-black hover:bg-secondary/90 font-semibold text-base"
             disabled={loading}
           >
             {loading ? (

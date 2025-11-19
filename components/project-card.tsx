@@ -15,7 +15,7 @@ export function ProjectCard({ project, onFund }: ProjectCardProps) {
   const remaining = project.goalAmount - project.currentAmount;
 
   return (
-    <Card className="bg-card border border-border/50 hover:border-[#00D26B]/50 transition-all overflow-hidden">
+    <Card className="bg-card border border-border/50 hover:border-secondary/50 transition-all overflow-hidden">
       {/* Header clickeable para ver detalle */}
       <Link href={`/projects/${project.id}`}>
         <div className="p-4 pb-3 cursor-pointer hover:bg-muted/20 transition-colors">
@@ -40,7 +40,7 @@ export function ProjectCard({ project, onFund }: ProjectCardProps) {
         <div className="flex items-baseline justify-between">
           <div>
             <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-bold text-[#00D26B]">
+              <span className="text-2xl font-bold text-secondary">
                 ${project.currentAmount.toFixed(0)}
               </span>
               <span className="text-sm text-muted-foreground">ARS</span>
@@ -52,9 +52,9 @@ export function ProjectCard({ project, onFund }: ProjectCardProps) {
           
           {progress < 100 && (
             <div className="text-right">
-              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#00D26B]/10">
-                <TrendingUp className="h-3 w-3 text-[#00D26B]" />
-                <span className="text-xs font-semibold text-[#00D26B]">
+              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/10">
+                <TrendingUp className="h-3 w-3 text-secondary" />
+                <span className="text-xs font-semibold text-secondary">
                   {progress.toFixed(0)}%
                 </span>
               </div>
@@ -65,7 +65,7 @@ export function ProjectCard({ project, onFund }: ProjectCardProps) {
         {/* Botón de acción */}
         <Button 
           onClick={() => onFund(project)}
-          className="w-full h-11 bg-[#00D26B] text-black hover:bg-[#00B85C] font-semibold transition-colors"
+          className="w-full h-11 bg-secondary text-black hover:bg-secondary/90 font-semibold transition-colors"
           disabled={progress >= 100}
         >
           {progress >= 100 ? '✓ Financiado' : 'Apoyar Proyecto'}

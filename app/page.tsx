@@ -59,7 +59,7 @@ export default function Home() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
         <div className="text-center space-y-4">
-          <Spinner className="h-12 w-12 text-[#00D26B] mx-auto" />
+          <Spinner className="h-12 w-12 text-secondary mx-auto" />
           <div>
             <h2 className="text-xl font-semibold text-foreground">Conectando con LemonCash</h2>
             <p className="text-sm text-muted-foreground mt-2">Autenticando tu sesión...</p>
@@ -81,7 +81,7 @@ export default function Home() {
           </Alert>
           <Button 
             onClick={() => window.location.reload()}
-            className="w-full bg-[#00D26B] text-black hover:bg-[#00B85C]"
+            className="w-full bg-secondary text-black hover:bg-secondary"
           >
             Reintentar Conexión
           </Button>
@@ -97,7 +97,7 @@ export default function Home() {
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00D26B] to-[#00B85C] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
                 <Heart className="h-5 w-5 text-black" />
               </div>
               <span className="text-lg font-semibold text-foreground">Fund Me!</span>
@@ -127,8 +127,8 @@ export default function Home() {
         {projects.length === 0 ? (
           <div className="text-center py-16 px-4">
             <div className="bg-card border border-border rounded-2xl p-8 max-w-sm mx-auto">
-              <div className="bg-[#00D26B]/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Heart className="h-8 w-8 text-[#00D26B]" />
+              <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Heart className="h-8 w-8 text-secondary" />
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">No hay proyectos</h3>
               <p className="text-sm text-muted-foreground mb-6">
@@ -153,7 +153,7 @@ export default function Home() {
           <Link href="/projects/new">
             <Button 
               variant="outline" 
-              className="w-full h-14 border-dashed border-2 border-border hover:border-[#00D26B] hover:bg-[#00D26B]/5 transition-colors"
+              className="w-full h-14 border-dashed border-2 border-border hover:border-secondary hover:bg-secondary/5 transition-colors"
             >
               <Plus className="h-5 w-5 mr-2" />
               <span>Crear Nuevo Proyecto</span>
