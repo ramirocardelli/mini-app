@@ -61,10 +61,10 @@ export function TabBar() {
               console.log('QR Scanner - Coming soon');
             }}
           >
-            <div className="w-[56px] h-[56px] rounded-full bg-[#00D26B] flex items-center justify-center shadow-lg relative -top-1">
-              <div className="w-[52px] h-[52px] rounded-full bg-[#00D26B] flex items-center justify-center border-4 border-background relative">
+            <div className="w-[56px] h-[56px] rounded-full bg-secondary flex items-center justify-center shadow-lg relative -top-1">
+              <div className="w-[52px] h-[52px] rounded-full bg-secondary flex items-center justify-center border-4 border-background relative">
                 <QrCode className="h-[26px] w-[26px] text-black" strokeWidth={2.5} />
-                <Heart className="h-[14px] w-[14px] text-[#00D26B] absolute" fill="#00D26B" stroke="none" />
+                <Heart className="h-[14px] w-[14px] text-secondary absolute" fill="#00D26B" stroke="none" />
               </div>
             </div>
           </button>

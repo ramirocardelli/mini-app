@@ -62,7 +62,7 @@ export default function MyProjectsPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
         <div className="text-center space-y-4">
-          <Spinner className="h-12 w-12 text-[#00D26B] mx-auto" />
+          <Spinner className="h-12 w-12 text-secondary mx-auto" />
           <div>
             <h2 className="text-xl font-semibold text-foreground">Conectando con LemonCash</h2>
             <p className="text-sm text-muted-foreground mt-2">Autenticando tu sesión...</p>
@@ -84,7 +84,7 @@ export default function MyProjectsPage() {
           </Alert>
           <Button 
             onClick={() => window.location.reload()}
-            className="w-full bg-[#00D26B] text-black hover:bg-[#00B85C]"
+            className="w-full bg-secondary text-black hover:bg-[#00B85C]"
           >
             Reintentar Conexión
           </Button>
@@ -109,15 +109,15 @@ export default function MyProjectsPage() {
         {projects.length === 0 ? (
           <div className="text-center py-16 px-4">
             <div className="bg-card border border-border rounded-2xl p-8 max-w-sm mx-auto">
-              <div className="bg-[#00D26B]/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Heart className="h-8 w-8 text-[#00D26B]" />
+              <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Heart className="h-8 w-8 text-secondary" />
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">No tenés proyectos</h3>
               <p className="text-sm text-muted-foreground mb-6">
                 Creá tu primer proyecto de crowdfunding
               </p>
               <Link href="/projects/new">
-                <Button className="bg-[#00D26B] text-black hover:bg-[#00B85C]">
+                <Button className="bg-secondary text-black hover:bg-[#00B85C]">
                   <Plus className="h-4 w-4 mr-2" />
                   Crear Proyecto
                 </Button>
