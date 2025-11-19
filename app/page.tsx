@@ -103,7 +103,7 @@ export default function Home() {
               <span className="text-lg font-semibold text-foreground">Fund Me!</span>
             </div>
             
-            <Link href="/projects/mine">
+            <Link href="/projects/me">
               <Button variant="ghost" size="sm" className="text-muted-foreground">
                 Mis Proyectos
               </Button>

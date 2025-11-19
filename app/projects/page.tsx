@@ -135,7 +135,7 @@ export default function ProjectsPage() {
         {/* Projects Grid */}
         {projects.length === 0 ? (
           <div className="text-center py-16 px-4">
-            <div className="bg-card border border-border rounded-lg p-8 max-w-md mx-auto">
+            <div className="bg-card border borhrefder-border rounded-lg p-8 max-w-md mx-auto">
               <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Wallet className="h-8 w-8 text-secondary" />
               </div>
