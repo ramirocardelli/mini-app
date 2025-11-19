@@ -92,36 +92,6 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Link href="/">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Volver
-                </Button>
-              </Link>
-              <div className="bg-secondary rounded-lg p-2">
-                <Wallet className="h-5 w-5 text-secondary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground">Explorar Proyectos</h1>
-                <p className="text-xs text-muted-foreground hidden sm:block">Fondear proyecto</p>
-              </div>
-            </div>
-            
-            <Link href="/projects/new">
-              <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-                <Plus className="h-4 w-4 mr-2" />
-                Crear Proyecto
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
       <main className="container mx-auto px-4 py-6 sm:py-8">
         <div className="mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-balance mb-2">
