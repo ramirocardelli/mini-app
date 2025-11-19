@@ -96,23 +96,23 @@ export default function Home() {
         {/* Título simple */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-foreground mb-1">
-            Proyectos
+            Campañas
           </h1>
           <p className="text-sm text-muted-foreground">
-            Apoyá proyectos increíbles
+            Apoyá campañas increíbles
           </p>
         </div>
 
-        {/* Lista de Proyectos */}
+        {/* Lista de Campañas */}
         {projects.length === 0 ? (
           <div className="text-center py-16 px-4">
             <div className="bg-card border border-border rounded-2xl p-8 max-w-sm mx-auto">
               <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Heart className="h-8 w-8 text-secondary" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">No hay proyectos</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">No hay campañas</h3>
               <p className="text-sm text-muted-foreground mb-6">
-                Sé el primero en crear un proyecto
+                Sé el primero en crear una campaña
               </p>
             </div>
           </div>
@@ -128,7 +128,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Botón Crear Proyecto - Abajo de la lista */}
+        {/* Botón Crear Campaña - Abajo de la lista */}
         <div className="mt-8 pb-4">
           <Link href="/projects/new">
             <Button 
@@ -136,7 +136,7 @@ export default function Home() {
               className="w-full h-14 border-dashed border-2 border-border hover:border-secondary hover:bg-secondary/5 transition-colors"
             >
               <Plus className="h-5 w-5 mr-2" />
-              <span>Crear Nuevo Proyecto</span>
+              <span>Crear Nueva Campaña</span>
             </Button>
           </Link>
         </div>

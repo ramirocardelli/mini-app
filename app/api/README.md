@@ -51,7 +51,7 @@ import { projectsApi, campaignsApi, donationsApi, usersApi, beneficiariesApi } f
 #### Projects
 
 ```typescript
-// Obtener todos los proyectos
+// Obtener todas las campañas
 const { data, success } = await projectsApi.getAll();
 
 // Filtrar por creador
@@ -60,16 +60,16 @@ const { data } = await projectsApi.getByCreator('user-id');
 // Filtrar por estado
 const { data } = await projectsApi.getByStatus('ACTIVE');
 
-// Crear proyecto
+// Crear campaña
 const { data, success } = await projectsApi.create({
-  title: 'Mi Proyecto',
+  title: 'Mi Campaña',
   description: 'Descripción',
   goalAmount: 1000,
   vaultAddress: '0x...',
   creatorId: 'user-id'
 });
 
-// Aprobar proyecto
+// Aprobar campaña
 await projectsApi.approve('project-id');
 ```
 
@@ -108,7 +108,7 @@ const { data } = await donationsApi.create({
 // Marcar como completada
 await donationsApi.markAsCompleted('donation-id', '0x...');
 
-// Vincular con proyecto
+// Vincular con campaña
 await donationsApi.linkToProject('donation-id', 'project-id');
 ```
 

@@ -43,7 +43,7 @@ export default function MyProjectsPage() {
   }, []);
 
   const loadProjects = () => {
-    // TODO: Filtrar proyectos por el usuario autenticado
+    // TODO: Filtrar campañas por el usuario autenticado
     // Por ahora mostramos todos
     const allProjects = getProjects();
     setProjects(allProjects);
@@ -98,28 +98,28 @@ export default function MyProjectsPage() {
         <main className="px-4 pt-6">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-foreground mb-1">
-              Mis Proyectos
+              Mis Campañas
             </h1>
             <p className="text-sm text-muted-foreground">
-              Proyectos que creaste
+              Campañas que creaste
             </p>
           </div>
 
-        {/* Lista de Proyectos */}
+        {/* Lista de Campañas */}
         {projects.length === 0 ? (
           <div className="text-center py-16 px-4">
             <div className="bg-card border border-border rounded-2xl p-8 max-w-sm mx-auto">
               <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Heart className="h-8 w-8 text-secondary" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">No tenés proyectos</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">No tenés campañas</h3>
               <p className="text-sm text-muted-foreground mb-6">
-                Creá tu primer proyecto de crowdfunding
+                Creá tu primera campaña de crowdfunding
               </p>
               <Link href="/projects/new">
                 <Button className="bg-secondary text-black hover:bg-[#00B85C]">
                   <Plus className="h-4 w-4 mr-2" />
-                  Crear Proyecto
+                  Crear Campaña
                 </Button>
               </Link>
             </div>

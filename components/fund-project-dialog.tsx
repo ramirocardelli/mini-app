@@ -89,7 +89,7 @@ export function FundProjectDialog({ project, open, onOpenChange, onSuccess }: Fu
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-card border-border sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-foreground text-xl">Apoyar Proyecto</DialogTitle>
+          <DialogTitle className="text-foreground text-xl">Apoyar Campaña</DialogTitle>
           <DialogDescription className="text-muted-foreground mt-1">
             {project?.title}
           </DialogDescription>

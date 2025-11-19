@@ -122,12 +122,12 @@ export default function MyDonationsPage() {
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">No tenés aportes</h3>
               <p className="text-sm text-muted-foreground mb-6">
-                Explorá proyectos y apoyá causas que te interesen
+                Explorá campañas y apoyá causas que te interesen
               </p>
               <Link href="/projects">
                 <Button className="bg-secondary text-black hover:bg-[#00B85C]">
                   <TrendingUp className="h-4 w-4 mr-2" />
-                  Explorar Proyectos
+                  Explorar Campañas
                 </Button>
               </Link>
             </div>
@@ -152,7 +152,7 @@ export default function MyDonationsPage() {
                     href={`/projects/${donation.projectId}`}
                     className="text-sm text-secondary hover:underline font-medium"
                   >
-                    Ver proyecto →
+                    Ver campaña →
                   </Link>
                 </CardContent>
               </Card>

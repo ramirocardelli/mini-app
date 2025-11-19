@@ -95,10 +95,10 @@ export default function ProjectsPage() {
       <main className="container mx-auto px-4 py-6 sm:py-8">
         <div className="mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-balance mb-2">
-            Todos los Proyectos
+            Todas las Campañas
           </h2>
           <p className="text-sm text-muted-foreground">
-            Descubre proyectos increíbles y apóyalos con LemonCash
+            Descubre campañas increíbles y apóyalas con LemonCash
           </p>
         </div>
 
@@ -109,14 +109,14 @@ export default function ProjectsPage() {
               <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Wallet className="h-8 w-8 text-secondary" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">No Hay Proyectos</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">No Hay Campañas</h3>
               <p className="text-sm text-muted-foreground mb-6">
-                Aún no hay proyectos disponibles. ¡Sé el primero en crear uno!
+                Aún no hay campañas disponibles. ¡Sé el primero en crear una!
               </p>
               <Link href="/projects/new">
                 <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
                   <Plus className="h-4 w-4 mr-2" />
-                  Crear Primer Proyecto
+                  Crear Primera Campaña
                 </Button>
               </Link>
             </div>

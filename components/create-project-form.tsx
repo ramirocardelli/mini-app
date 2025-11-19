@@ -98,15 +98,15 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
       saveProject(newProject);
 
       toast({
-        title: '¡Proyecto Creado!',
-        description: 'Tu proyecto de crowdfunding ha sido creado exitosamente',
+        title: '¡Campaña Creada!',
+        description: 'Tu campaña de crowdfunding ha sido creada exitosamente',
       });
 
       onSuccess();
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'No se pudo crear el proyecto. Por favor intentá nuevamente.',
+        description: 'No se pudo crear la campaña. Por favor intentá nuevamente.',
         variant: 'destructive',
       });
     } finally {
@@ -117,7 +117,7 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
   return (
     <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="text-foreground">Crear Proyecto</CardTitle>
+        <CardTitle className="text-foreground">Crear Campaña</CardTitle>
         <CardDescription className="text-muted-foreground">
           Completá el formulario para iniciar tu crowdfunding
         </CardDescription>
@@ -125,12 +125,12 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title" className="text-foreground">Título del Proyecto *</Label>
+            <Label htmlFor="title" className="text-foreground">Título de la Campaña *</Label>
             <Input
               id="title"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="Mi Proyecto Increíble"
+              placeholder="Mi Campaña Increíble"
               className="bg-input text-foreground border-border"
               required
             />
@@ -142,7 +142,7 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
               id="description"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Describí tu proyecto y qué planeas lograr..."
+              placeholder="Describí tu campaña y qué planeas lograr..."
               className="bg-input text-foreground border-border min-h-24"
               required
             />
@@ -210,7 +210,7 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
                   Creando...
                 </>
               ) : (
-                'Crear Proyecto'
+                'Crear Campaña'
               )}
             </Button>
           </div>

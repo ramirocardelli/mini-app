@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       throw new NotFoundError('Donation not found');
     }
 
-    // Verificar que el proyecto exista
+    // Verificar que la campaña exista
     const project = await repositories.projectRepository.findById(projectId);
     if (!project) {
       throw new NotFoundError('Project not found');

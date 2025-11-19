@@ -98,12 +98,12 @@ export default function ProjectDetailPage() {
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription className="text-sm">
-              Proyecto no encontrado
+              Campaña no encontrada
             </AlertDescription>
           </Alert>
           <Link href="/projects">
             <Button className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90">
-              Volver a Proyectos
+              Volver a Campañas
             </Button>
           </Link>
         </div>
@@ -167,7 +167,7 @@ export default function ProjectDetailPage() {
                     className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
                   >
                     <TrendingUp className="h-4 w-4 mr-2" />
-                    Fondear Proyecto
+                    Fondear Campaña
                   </Button>
                 </div>
               )}

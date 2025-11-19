@@ -57,7 +57,7 @@ export function TabBar() {
           <button 
             className="flex flex-col items-center justify-center flex-1 h-full relative -mt-1"
             onClick={() => {
-              // TODO: Implementar scanner QR para proyectos
+              // TODO: Implementar scanner QR para campañas
               console.log('QR Scanner - Coming soon');
             }}
           >
@@ -86,7 +86,7 @@ export function TabBar() {
             )}
           </Link>
 
-          {/* Mis Proyectos */}
+          {/* Mis Campañas */}
           <Link 
             href="/projects/me"
             className={cn(

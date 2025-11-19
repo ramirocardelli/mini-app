@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       throw new NotFoundError('Creator user not found');
     }
 
-    // Crear proyecto
+    // Crear campaña
     const project = await repositories.projectRepository.create({
       title,
       description,

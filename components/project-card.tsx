@@ -70,7 +70,7 @@ export function ProjectCard({ project, onFund }: ProjectCardProps) {
           className="w-full h-11 bg-secondary text-black hover:bg-secondary/90 font-semibold transition-colors"
           disabled={progress >= 100}
         >
-          {progress >= 100 ? '✓ Financiado' : 'Apoyar Proyecto'}
+          {progress >= 100 ? '✓ Financiado' : 'Apoyar Campaña'}
         </Button>
       </div>
     </Card>
