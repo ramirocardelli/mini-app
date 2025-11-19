@@ -78,15 +78,6 @@ export default function NewProjectPage() {
     return (
       <div className="min-h-screen bg-background pb-24">
         <main className="px-4 pt-6">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-foreground mb-1">
-              Crear Proyecto
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Completá el formulario para iniciar tu crowdfunding
-            </p>
-          </div>
-          
           <div className="max-w-2xl mx-auto">
             <CreateProjectForm
               onSuccess={handleSuccess}

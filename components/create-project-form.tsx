@@ -40,8 +40,8 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
       // Validation
       if (!formData.title || !formData.description || !formData.creatorName || !formData.creatorAddress) {
         toast({
-          title: 'Missing Information',
-          description: 'Please fill in all required fields',
+          title: 'Información Faltante',
+          description: 'Por favor completá todos los campos requeridos',
           variant: 'destructive',
         });
         setLoading(false);
@@ -50,8 +50,8 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
 
       if (isNaN(goalAmount) || goalAmount <= 0) {
         toast({
-          title: 'Invalid Goal Amount',
-          description: 'Please enter a valid goal amount',
+          title: 'Monto Objetivo Inválido',
+          description: 'Por favor ingresá un monto objetivo válido',
           variant: 'destructive',
         });
         setLoading(false);
@@ -60,8 +60,8 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
 
       if (isNaN(initialDeposit) || initialDeposit < 0) {
         toast({
-          title: 'Invalid Initial Deposit',
-          description: 'Please enter a valid initial deposit amount',
+          title: 'Depósito Inicial Inválido',
+          description: 'Por favor ingresá un monto de depósito inicial válido',
           variant: 'destructive',
         });
         setLoading(false);
@@ -74,8 +74,8 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
         
         if (!paymentResponse.success) {
           toast({
-            title: 'Payment Failed',
-            description: paymentResponse.error || 'Failed to process initial deposit',
+            title: 'Pago Fallido',
+            description: paymentResponse.error || 'No se pudo procesar el depósito inicial',
             variant: 'destructive',
           });
           setLoading(false);
@@ -98,15 +98,15 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
       saveProject(newProject);
 
       toast({
-        title: 'Project Created!',
-        description: 'Your crowdfunding project has been created successfully',
+        title: '¡Proyecto Creado!',
+        description: 'Tu proyecto de crowdfunding ha sido creado exitosamente',
       });
 
       onSuccess();
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'Failed to create project. Please try again.',
+        description: 'No se pudo crear el proyecto. Por favor intentá nuevamente.',
         variant: 'destructive',
       });
     } finally {
@@ -117,65 +117,52 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
   return (
     <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="text-foreground">Create New Project</CardTitle>
+        <CardTitle className="text-foreground">Crear Proyecto</CardTitle>
         <CardDescription className="text-muted-foreground">
-          Fill in the details to start your crowdfunding campaign
+          Completá el formulario para iniciar tu crowdfunding
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title" className="text-foreground">Project Title *</Label>
+            <Label htmlFor="title" className="text-foreground">Título del Proyecto *</Label>
             <Input
               id="title"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="My Awesome Project"
+              placeholder="Mi Proyecto Increíble"
               className="bg-input text-foreground border-border"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-foreground">Description *</Label>
+            <Label htmlFor="description" className="text-foreground">Descripción *</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Describe your project and what you plan to achieve..."
+              placeholder="Describí tu proyecto y qué planeas lograr..."
               className="bg-input text-foreground border-border min-h-24"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="creatorName" className="text-foreground">Your Name *</Label>
+            <Label htmlFor="creatorName" className="text-foreground">Tu Nombre *</Label>
             <Input
               id="creatorName"
               value={formData.creatorName}
               onChange={(e) => setFormData({ ...formData, creatorName: e.target.value })}
-              placeholder="John Doe"
+              placeholder="Juan Pérez"
               className="bg-input text-foreground border-border"
               required
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="creatorAddress" className="text-foreground">Your Crypto Address *</Label>
-            <Input
-              id="creatorAddress"
-              value={formData.creatorAddress}
-              onChange={(e) => setFormData({ ...formData, creatorAddress: e.target.value })}
-              placeholder="0x..."
-              className="bg-input text-foreground border-border font-mono text-sm"
-              required
-            />
-            <p className="text-xs text-muted-foreground">This is where you'll receive the funds</p>
-          </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="goalAmount" className="text-foreground">Goal Amount (USD) *</Label>
+              <Label htmlFor="goalAmount" className="text-foreground">Monto Objetivo (USD) *</Label>
               <Input
                 id="goalAmount"
                 type="number"
@@ -189,7 +176,7 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="initialDeposit" className="text-foreground">Initial Deposit (USD)</Label>
+              <Label htmlFor="initialDeposit" className="text-foreground">Depósito Inicial (USD)</Label>
               <Input
                 id="initialDeposit"
                 type="number"
@@ -210,7 +197,7 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
               className="flex-1 border-border text-foreground hover:bg-muted"
               disabled={loading}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button
               type="submit"
@@ -220,10 +207,10 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
               {loading ? (
                 <>
                   <Spinner className="mr-2 h-4 w-4" />
-                  Creating...
+                  Creando...
                 </>
               ) : (
-                'Create Project'
+                'Crear Proyecto'
               )}
             </Button>
           </div>
