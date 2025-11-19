@@ -10,6 +10,7 @@ import { lemonSDK } from '@/lib/lemon-sdk-mock';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, Plus, Heart } from 'lucide-react';
+import Link from 'next/link';
 
 export default function MyProjectsPage() {
   const [authenticated, setAuthenticated] = useState(false);
