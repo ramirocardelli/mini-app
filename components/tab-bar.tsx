@@ -71,7 +71,7 @@ export function TabBar() {
 
           {/* Mis Aportes */}
           <Link 
-            href="/donations/mine"
+            href="/donations/me"
             className={cn(
               "flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors relative",
               isActive('/donations')
@@ -88,17 +88,17 @@ export function TabBar() {
 
           {/* Mis Proyectos */}
           <Link 
-            href="/projects/mine"
+            href="/projects/me"
             className={cn(
               "flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors relative",
-              pathname.includes('/mine') && pathname.includes('/projects')
+              pathname.includes('/me') && pathname.includes('/projects')
                 ? "text-foreground" 
                 : "text-muted-foreground/70"
             )}
           >
             <User className="h-[22px] w-[22px]" strokeWidth={2} />
             <span className="text-[11px] font-normal tracking-tight">Perfil</span>
-            {pathname.includes('/mine') && pathname.includes('/projects') && (
+            {pathname.includes('/me') && pathname.includes('/projects') && (
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-[3px] bg-foreground rounded-t-full" />
             )}
           </Link>
