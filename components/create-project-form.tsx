@@ -162,7 +162,7 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="goalAmount" className="text-foreground">Monto Objetivo (USD) *</Label>
+              <Label htmlFor="goalAmount" className="text-foreground">Monto Objetivo (USDC) *</Label>
               <Input
                 id="goalAmount"
                 type="number"
@@ -176,7 +176,7 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="initialDeposit" className="text-foreground">Depósito Inicial (USD)</Label>
+              <Label htmlFor="initialDeposit" className="text-foreground">Depósito Inicial (USDC)</Label>
               <Input
                 id="initialDeposit"
                 type="number"

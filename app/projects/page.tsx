@@ -7,6 +7,7 @@ import { ProjectCard } from '@/components/project-card';
 import { FundProjectDialog } from '@/components/fund-project-dialog';
 import { Project } from '@/lib/types';
 import { getProjects } from '@/lib/storage';
+import { initializeDummyData } from '@/lib/dummy-data';
 import { lemonSDK } from '@/lib/lemon-sdk-mock';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -21,6 +22,9 @@ export default function ProjectsPage() {
   const [showFundDialog, setShowFundDialog] = useState(false);
 
   useEffect(() => {
+    // Inicializar datos dummy si no existen
+    initializeDummyData();
+    
     const authenticate = async () => {
       try {
         const response = await lemonSDK.authenticate();

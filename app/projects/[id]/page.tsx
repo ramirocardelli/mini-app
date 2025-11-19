@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { FundProjectDialog } from '@/components/fund-project-dialog';
 import { Project } from '@/lib/types';
 import { getProjectById } from '@/lib/storage';
+import { initializeDummyData } from '@/lib/dummy-data';
 import { lemonSDK } from '@/lib/lemon-sdk-mock';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -26,6 +27,9 @@ export default function ProjectDetailPage() {
   const [showFundDialog, setShowFundDialog] = useState(false);
 
   useEffect(() => {
+    // Inicializar datos dummy si no existen
+    initializeDummyData();
+    
     const authenticate = async () => {
       try {
         const response = await lemonSDK.authenticate();
@@ -150,17 +154,23 @@ export default function ProjectDetailPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Recaudado</p>
-                  <p className="text-2xl font-bold">${project.currentAmount.toFixed(2)}</p>
+                  <div className="flex items-baseline gap-1">
+                    <p className="text-2xl font-bold">${project.currentAmount.toFixed(2)}</p>
+                    <span className="text-sm text-muted-foreground">USDC</span>
+                  </div>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Meta</p>
-                  <p className="text-2xl font-bold">${project.goalAmount.toFixed(2)}</p>
+                  <div className="flex items-baseline gap-1">
+                    <p className="text-2xl font-bold">${project.goalAmount.toFixed(2)}</p>
+                    <span className="text-sm text-muted-foreground">USDC</span>
+                  </div>
                 </div>
               </div>
               {remaining > 0 && (
                 <div className="pt-4 border-t">
                   <p className="text-sm text-muted-foreground mb-2">
-                    Faltan ${remaining.toFixed(2)} para alcanzar la meta
+                    Faltan ${remaining.toFixed(2)} USDC para alcanzar la meta
                   </p>
                   <Button
                     onClick={() => setShowFundDialog(true)}

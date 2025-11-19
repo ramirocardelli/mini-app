@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Donation } from '@/lib/types';
+import { getDonations } from '@/lib/storage';
+import { initializeDummyData } from '@/lib/dummy-data';
 import { lemonSDK } from '@/lib/lemon-sdk-mock';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -17,6 +19,9 @@ export default function MyDonationsPage() {
   const [donations, setDonations] = useState<Donation[]>([]);
 
   useEffect(() => {
+    // Inicializar datos dummy si no existen
+    initializeDummyData();
+    
     const authenticate = async () => {
       try {
         const response = await lemonSDK.authenticate();
@@ -39,8 +44,8 @@ export default function MyDonationsPage() {
   }, []);
 
   const loadDonations = () => {
-    // TODO: Implementar almacenamiento y recuperación de donaciones
-    setDonations([]);
+    const allDonations = getDonations();
+    setDonations(allDonations);
   };
 
   if (authLoading) {
@@ -105,7 +110,7 @@ export default function MyDonationsPage() {
               <p className="text-3xl font-bold text-secondary">
                 ${totalDonated.toFixed(0)}
               </p>
-              <span className="text-sm text-muted-foreground">ARS</span>
+              <span className="text-sm text-muted-foreground">USDC</span>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
               {donations.length} {donations.length === 1 ? 'aporte' : 'aportes'}
@@ -139,7 +144,7 @@ export default function MyDonationsPage() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-bold text-secondary">
-                      ${donation.amount.toFixed(0)} ARS
+                      ${donation.amount.toFixed(0)} USDC
                     </CardTitle>
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <Calendar className="h-3.5 w-3.5" />
