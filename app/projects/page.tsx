@@ -141,15 +141,6 @@ export default function ProjectsPage() {
         onOpenChange={setShowFundDialog}
         onSuccess={handleFundSuccess}
       />
-
-      {/* Footer */}
-      <footer className="border-t border-border mt-16 py-6">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-xs text-muted-foreground">
-            Built with LemonCash SDK • Mock mode for development
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
