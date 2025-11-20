@@ -1,11 +1,13 @@
 import { testConnection, syncDatabase } from '@/lib/infrastructure/orm/sequelize/config';
 // Import all models to ensure they are initialized before sync
 import '@/lib/infrastructure/orm/sequelize/models/UserModel';
-import '@/lib/infrastructure/orm/sequelize/models/BeneficiaryModel';
 import '@/lib/infrastructure/orm/sequelize/models/CampaignModel';
-import '@/lib/infrastructure/orm/sequelize/models/ProjectModel';
 import '@/lib/infrastructure/orm/sequelize/models/DonationModel';
-import '@/lib/infrastructure/orm/sequelize/models/DonationProjectModel';
+import '@/lib/infrastructure/orm/sequelize/models/StakingModel';
+import '@/lib/infrastructure/orm/sequelize/models/RefundModel';
+import '@/lib/infrastructure/orm/sequelize/models/DonorDAOModel';
+import '@/lib/infrastructure/orm/sequelize/models/DonorDAOMemberModel';
+import '@/lib/infrastructure/orm/sequelize/models/DAOVoteModel';
 
 /**
  * Initialize Database Connection

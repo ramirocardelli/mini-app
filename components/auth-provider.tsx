@@ -32,11 +32,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Initialize dummy data
     initializeDummyData();
-    
+
     const doAuthenticate = async () => {
       try {
         const response = await authenticate();
-        
+
         if (response.result === TransactionResult.SUCCESS) {
           setAuthenticated(true);
           setAuthError(null);
@@ -53,43 +53,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     doAuthenticate();
   }, []);
 
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4">
-        <div className="text-center space-y-4">
-          <Spinner className="h-12 w-12 text-secondary mx-auto" />
-          <div>
-            <h2 className="text-xl font-semibold text-foreground">Cargando</h2>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (authError) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4">
-        <div className="max-w-md w-full space-y-4">
-          <Alert variant="destructive" className="border-destructive/50">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-sm">
-              {authError}
-            </AlertDescription>
-          </Alert>
-          <Button 
-            onClick={() => window.location.reload()}
-            className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
-          >
-            Reintentar Conexión
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <AuthContext.Provider value={{ authenticated, loading: authLoading, error: authError }}>
       {children}
+
+      {/* Loading Overlay */}
+      {authLoading && (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center">
+          <div className="text-center space-y-4">
+            <Spinner className="h-12 w-12 text-secondary mx-auto" />
+            <div>
+              <h2 className="text-xl font-semibold text-foreground">Cargando</h2>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Error Overlay */}
+      {authError && (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+          <div className="max-w-md w-full space-y-4">
+            <Alert variant="destructive" className="border-destructive/50">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription className="text-sm">
+                {authError}
+              </AlertDescription>
+            </Alert>
+            <Button
+              onClick={() => window.location.reload()}
+              className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
+            >
+              Reintentar Conexión
+            </Button>
+          </div>
+        </div>
+      )}
     </AuthContext.Provider>
   );
 }

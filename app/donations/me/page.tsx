@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Donation } from '@/lib/types';
-import { getDonations } from '@/lib/storage';
+import { donationsApi } from '@/lib/services/api/donations';
 import { Spinner } from '@/components/ui/spinner';
 import { AlertCircle, Heart, Calendar, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
@@ -17,10 +17,18 @@ export default function MyDonationsPage() {
     loadDonations();
   }, []);
 
-  const loadDonations = () => {
-    const allDonations = getDonations();
-    setDonations(allDonations);
-    setLoading(false);
+  const loadDonations = async () => {
+    try {
+      setLoading(true);
+      const response = await donationsApi.getAll();
+      if (response.success) {
+        setDonations(response.data || []);
+      }
+    } catch (error) {
+      console.error('Error loading donations:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -82,7 +90,7 @@ export default function MyDonationsPage() {
               <p className="text-sm text-muted-foreground mb-6">
                 Explorá campañas y apoyá causas que te interesen
               </p>
-              <Link href="/projects">
+              <Link href="/campaigns">
                 <Button className="bg-secondary text-black hover:bg-[#00B85C]">
                   <TrendingUp className="h-4 w-4 mr-2" />
                   Explorar Campañas
@@ -107,7 +115,7 @@ export default function MyDonationsPage() {
                 </CardHeader>
                 <CardContent>
                   <Link 
-                    href={`/projects/${donation.projectId}`}
+                    href={`/campaigns/${donation.campaignId}`}
                     className="text-sm text-secondary hover:underline font-medium"
                   >
                     Ver campaña →

@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserProfile, Project, Donation } from '@/lib/types';
-import { getUserProfile, getProjects, getDonations } from '@/lib/storage';
+import { UserProfile, Campaign, Donation } from '@/lib/types';
+import { getUserProfile, getDonations } from '@/lib/storage';
+import { campaignsApi } from '@/lib/services/api/campaigns';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, User, Wallet, Calendar, TrendingUp, Heart, Plus, Link as LinkIcon } from 'lucide-react';
@@ -12,7 +13,7 @@ import Link from 'next/link';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [myCampaigns, setMyCampaigns] = useState<Project[]>([]);
+  const [myCampaigns, setMyCampaigns] = useState<Campaign[]>([]);
   const [myDonations, setMyDonations] = useState<Donation[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,24 +21,34 @@ export default function ProfilePage() {
     loadProfileData();
   }, []);
 
-  const loadProfileData = () => {
-    const profileData = getUserProfile();
-    if (profileData) {
-      setProfile(profileData);
+  const loadProfileData = async () => {
+    try {
+      const profileData = getUserProfile();
+      if (profileData) {
+        setProfile(profileData);
 
-      // Load user campaigns (simulating that user created first 3 campaigns)
-      const allProjects = getProjects();
-      const userCampaigns = allProjects.slice(0, 3);
-      setMyCampaigns(userCampaigns);
+        // Load user campaigns from API
+        const campaignsResponse = await campaignsApi.getAll();
+        if (campaignsResponse.success) {
+          // Filter campaigns created by this user
+          const userCampaigns = (campaignsResponse.data || []).filter(
+            (c: Campaign) => c.creatorAddress.toLowerCase() === profileData.walletAddress.toLowerCase()
+          );
+          setMyCampaigns(userCampaigns);
+        }
 
-      // Load user donations
-      const allDonations = getDonations();
-      const userDonations = allDonations.filter(
-        d => d.donorAddress.toLowerCase() === profileData.walletAddress.toLowerCase()
-      );
-      setMyDonations(userDonations);
+        // Load user donations
+        const allDonations = getDonations();
+        const userDonations = allDonations.filter(
+          d => d.donorAddress.toLowerCase() === profileData.walletAddress.toLowerCase()
+        );
+        setMyDonations(userDonations);
+      }
+    } catch (error) {
+      console.error('Error loading profile data:', error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   if (loading) {
@@ -143,7 +154,7 @@ export default function ProfilePage() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-foreground">Mis Campañas</h2>
-            <Link href="/projects/new">
+            <Link href="/campaigns/new">
               <Button size="sm" variant="outline" className="h-8">
                 <Plus className="h-3.5 w-3.5 mr-1" />
                 Nueva
@@ -155,7 +166,7 @@ export default function ProfilePage() {
               <CardContent className="pt-6 pb-6 text-center">
                 <Heart className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
                 <p className="text-sm text-muted-foreground mb-4">No tenés campañas creadas</p>
-                <Link href="/projects/new">
+                <Link href="/campaigns/new">
                   <Button size="sm" className="bg-secondary text-black hover:bg-[#00B85C]">
                     Crear Primera Campaña
                   </Button>
@@ -168,7 +179,7 @@ export default function ProfilePage() {
                 const progress = (campaign.currentAmount / campaign.goalAmount) * 100;
                 return (
                   <div key={campaign.id}>
-                    <Link href={`/projects/${campaign.id}`}>
+                    <Link href={`/campaigns/${campaign.id}`}>
                       <Card className="bg-card border-border/50 hover:border-secondary/50 transition-colors">
                         <CardContent className="pt-4 pb-4">
                           <div className="flex items-start justify-between gap-3">
@@ -217,7 +228,7 @@ export default function ProfilePage() {
               <CardContent className="pt-6 pb-6 text-center">
                 <TrendingUp className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
                 <p className="text-sm text-muted-foreground mb-4">Aún no realizaste aportes</p>
-                <Link href="/projects">
+                <Link href="/">
                   <Button size="sm" className="bg-secondary text-black hover:bg-[#00B85C]">
                     Explorar Campañas
                   </Button>
@@ -228,7 +239,7 @@ export default function ProfilePage() {
             <div className="space-y-3">
               {myDonations.slice(0, 5).map((donation) => (
                 <div key={donation.id}>
-                  <Link href={`/projects/${donation.projectId}`}>
+                  <Link href={`/campaigns/${donation.campaignId}`}>
                     <Card className="bg-card border-border/50 hover:border-secondary/50 transition-colors">
                       <CardContent className="pt-4 pb-4">
                         <div className="flex items-center justify-between">

@@ -30,7 +30,8 @@ export const campaignsApi = {
     title: string;
     description: string;
     goalAmount: number;
-    goalCurrency?: string;
+    goalToken?: string;
+    createdBy: string;
     imageUrl?: string;
     startDate?: Date;
     endDate?: Date;
@@ -54,7 +55,7 @@ export const campaignsApi = {
       title?: string;
       description?: string;
       goalAmount?: number;
-      goalCurrency?: string;
+      goalToken?: string;
       imageUrl?: string;
       startDate?: Date;
       endDate?: Date;

@@ -19,12 +19,13 @@ export interface CampaignAttributes {
   title: string;
   description: string;
   goalAmount: number;
-  goalCurrency: string;
+  goalToken: string;
   currentAmount: number;
   status: CampaignStatus;
   imageUrl: string | null;
   startDate: Date | null;
   endDate: Date | null;
+  createdBy: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -49,12 +50,13 @@ export class CampaignModel
   declare title: string;
   declare description: string;
   declare goalAmount: number;
-  declare goalCurrency: string;
+  declare goalToken: string;
   declare currentAmount: number;
   declare status: CampaignStatus;
   declare imageUrl: string | null;
   declare startDate: Date | null;
   declare endDate: Date | null;
+  declare createdBy: string;
   declare createdAt: Date;
   declare updatedAt: Date;
 }
@@ -86,12 +88,12 @@ CampaignModel.init(
         min: 0,
       },
     },
-    goalCurrency: {
+    goalToken: {
       type: DataTypes.STRING(10),
       allowNull: false,
-      defaultValue: 'USD',
+      defaultValue: 'USDC',
       validate: {
-        isIn: [['USD', 'ARS', 'BRL', 'ETH', 'USDC']],
+        isIn: [['USD', 'ARS', 'BRL', 'ETH', 'USDC', 'USDT', 'DAI']],
       },
     },
     currentAmount: {
@@ -119,6 +121,14 @@ CampaignModel.init(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    createdBy: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -137,6 +147,14 @@ CampaignModel.init(
     underscored: true,
   }
 );
+
+// Define associations
+import UserModel from './UserModel';
+
+CampaignModel.belongsTo(UserModel, {
+  foreignKey: 'createdBy',
+  as: 'creator',
+});
 
 export default CampaignModel;
 

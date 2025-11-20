@@ -12,26 +12,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Project, Donation } from '@/lib/types';
-import { updateProject, saveDonation } from '@/lib/storage';
+import { Campaign, Donation } from '@/lib/types';
 import { authenticate, deposit, TransactionResult, TokenName } from '@/lib/lemon-sdk-mock';
 import { useToast } from '@/hooks/use-toast';
 import { Spinner } from '@/components/ui/spinner';
 
 interface FundProjectDialogProps {
-  project: Project | null;
+  campaign: Campaign | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess: () => void;
 }
 
-export function FundProjectDialog({ project, open, onOpenChange, onSuccess }: FundProjectDialogProps) {
+export function FundProjectDialog({ campaign, open, onOpenChange, onSuccess }: FundProjectDialogProps) {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleFund = async () => {
-    if (!project) return;
+    if (!campaign) return;
 
     const fundAmount = parseFloat(amount);
 
@@ -87,29 +86,73 @@ export function FundProjectDialog({ project, open, onOpenChange, onSuccess }: Fu
         return;
       }
 
-      // Update project with new funding
-      const newAmount = project.currentAmount + fundAmount;
-      updateProject(project.id, { currentAmount: newAmount });
+      // Get or create user
+      let userId: string;
+      try {
+        const userResponse = await fetch('/api/users/by-wallet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ walletAddress: donorAddress }),
+        });
+        
+        if (!userResponse.ok) {
+          throw new Error('Failed to get/create user');
+        }
+        
+        const userData = await userResponse.json();
+        userId = userData.data.id;
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'No se pudo procesar tu usuario. Por favor intentá nuevamente.',
+          variant: 'destructive',
+        });
+        setLoading(false);
+        return;
+      }
 
-      // Save donation
-      const donation: Donation = {
-        id: 'donation_' + Math.random().toString(36).substr(2, 9),
-        projectId: project.id,
-        amount: fundAmount,
-        donorAddress,
-        timestamp: new Date(),
-      };
-      saveDonation(donation);
+      // Create donation via API
+      const donationResponse = await fetch('/api/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId,
+          campaignId: campaign.id,
+          amount: fundAmount,
+          token: 'USDC',
+          paymentId: paymentResponse.data?.txHash || `payment_${Date.now()}`,
+        }),
+      });
+
+      if (!donationResponse.ok) {
+        const errorData = await donationResponse.json();
+        throw new Error(errorData.error || 'Failed to create donation');
+      }
+
+      const donationData = await donationResponse.json();
+
+      // Actualizar el monto actual de la campaña
+      try {
+        await fetch(`/api/campaigns/${campaign.id}/add-funds`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: fundAmount }),
+        });
+      } catch (updateError) {
+        console.error('Error updating campaign funds:', updateError);
+        // No bloquear el flujo si falla la actualización
+      }
 
       toast({
         title: 'Donación Exitosa',
-        description: `Donaste $${fundAmount.toFixed(2)} a ${project.title}`,
+        description: `Donaste $${fundAmount.toFixed(2)} USDC a ${campaign.title}`,
       });
 
       setAmount('');
       onOpenChange(false);
       onSuccess();
     } catch (error) {
+      console.error('Donation error:', error);
       toast({
         title: 'Error',
         description: 'Ocurrió un error al procesar el pago. Por favor intentá nuevamente.',
@@ -120,7 +163,7 @@ export function FundProjectDialog({ project, open, onOpenChange, onSuccess }: Fu
     }
   };
 
-  const remaining = project ? project.goalAmount - project.currentAmount : 0;
+  const remaining = campaign ? campaign.goalAmount - campaign.currentAmount : 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -128,23 +171,23 @@ export function FundProjectDialog({ project, open, onOpenChange, onSuccess }: Fu
         <DialogHeader>
           <DialogTitle className="text-foreground text-xl">Apoyar Campaña</DialogTitle>
           <DialogDescription className="text-muted-foreground mt-1">
-            {project?.title}
+            {campaign?.title}
           </DialogDescription>
         </DialogHeader>
 
-        {project && (
+        {campaign && (
           <div className="space-y-5 py-4">
             <div className="space-y-3 p-4 rounded-xl bg-muted/30 border border-border/50">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Actual</span>
                 <span className="text-base font-semibold text-secondary">
-                  ${project.currentAmount.toFixed(0)} USDC
+                  ${campaign.currentAmount.toFixed(0)} USDC
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Meta</span>
                 <span className="text-base font-medium text-foreground">
-                  ${project.goalAmount.toFixed(0)} USDC
+                  ${campaign.goalAmount.toFixed(0)} USDC
                 </span>
               </div>
               <div className="pt-2 border-t border-border/50">

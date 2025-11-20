@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title, description, goalAmount, goalCurrency, imageUrl, startDate, endDate } = body;
+    const { title, description, goalAmount, goalToken, createdBy, imageUrl, startDate, endDate } = body;
 
     // Validaciones
     if (!title || title.trim().length === 0) {
@@ -53,8 +53,17 @@ export async function POST(request: NextRequest) {
     if (goalAmount <= 0) {
       throw new ValidationError('Goal amount must be positive');
     }
+    if (!createdBy || createdBy.trim().length === 0) {
+      throw new ValidationError('Creator user ID is required');
+    }
     if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
       throw new ValidationError('Start date must be before end date');
+    }
+
+    // Verificar que el usuario creador exista
+    const user = await repositories.userRepository.findById(createdBy);
+    if (!user) {
+      throw new ValidationError('Creator user not found');
     }
 
     // Crear campaña
@@ -62,12 +71,13 @@ export async function POST(request: NextRequest) {
       title,
       description,
       goalAmount,
-      goalCurrency: goalCurrency || 'USD',
+      goalToken: goalToken || 'USDC',
       currentAmount: 0,
       status: CampaignStatus.DRAFT,
       imageUrl: imageUrl || null,
       startDate: startDate || null,
       endDate: endDate || null,
+      createdBy,
     } as any);
 
     return NextResponse.json(

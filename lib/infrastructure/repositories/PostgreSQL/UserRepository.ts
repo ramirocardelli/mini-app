@@ -20,7 +20,7 @@ export class UserRepository
   protected toDomain(model: UserModel): User {
     return new User(
       model.id,
-      model.wallet,
+      model.walletAddress,
       model.username,
       model.createdAt,
       model.updatedAt
@@ -32,7 +32,7 @@ export class UserRepository
    */
   protected toModel(entity: Partial<User>): Partial<UserAttributes> {
     return {
-      wallet: entity.wallet,
+      walletAddress: entity.walletAddress,
       username: entity.username,
     };
   }
@@ -40,8 +40,8 @@ export class UserRepository
   /**
    * Find user by wallet address
    */
-  async findByWallet(wallet: string): Promise<User | null> {
-    const model = await this.model.findOne({ where: { wallet } });
+  async findByWallet(walletAddress: string): Promise<User | null> {
+    const model = await this.model.findOne({ where: { walletAddress } });
     return model ? this.toDomain(model) : null;
   }
 }

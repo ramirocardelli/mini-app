@@ -5,30 +5,41 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ProjectCard } from '@/components/project-card';
 import { FundProjectDialog } from '@/components/fund-project-dialog';
-import { Project } from '@/lib/types';
-import { getProjects } from '@/lib/storage';
+import { Campaign } from '@/lib/types';
+import { campaignsApi } from '@/lib/services/api/campaigns';
 import { Plus, Wallet, ArrowLeft } from 'lucide-react';
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [showFundDialog, setShowFundDialog] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadProjects();
+    loadCampaigns();
   }, []);
 
-  const loadProjects = () => {
-    setProjects(getProjects());
+  const loadCampaigns = async () => {
+    try {
+      setLoading(true);
+      const response = await campaignsApi.getAll();
+      if (response.success) {
+        setCampaigns(response.data || []);
+      }
+    } catch (error) {
+      console.error('Error loading campaigns:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleFundProject = (project: Project) => {
-    setSelectedProject(project);
+  const handleFundCampaign = (campaign: Campaign) => {
+    setSelectedCampaign(campaign);
     setShowFundDialog(true);
   };
 
   const handleFundSuccess = () => {
-    loadProjects();
+    loadCampaigns();
   };
 
   return (
@@ -43,10 +54,16 @@ export default function ProjectsPage() {
           </p>
         </div>
 
-        {/* Projects Grid */}
-        {projects.length === 0 ? (
+        {/* Campaigns Grid */}
+        {loading ? (
           <div className="text-center py-16 px-4">
-            <div className="bg-card border borhrefder-border rounded-lg p-8 max-w-md mx-auto">
+            <div className="bg-card border border-border rounded-lg p-8 max-w-md mx-auto">
+              <p className="text-sm text-muted-foreground">Cargando campañas...</p>
+            </div>
+          </div>
+        ) : campaigns.length === 0 ? (
+          <div className="text-center py-16 px-4">
+            <div className="bg-card border border-border rounded-lg p-8 max-w-md mx-auto">
               <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Wallet className="h-8 w-8 text-secondary" />
               </div>
@@ -54,7 +71,7 @@ export default function ProjectsPage() {
               <p className="text-sm text-muted-foreground mb-6">
                 Aún no hay campañas disponibles. ¡Sé el primero en crear una!
               </p>
-              <Link href="/projects/new">
+              <Link href="/campaigns/new">
                 <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
                   <Plus className="h-4 w-4 mr-2" />
                   Crear Primera Campaña
@@ -64,11 +81,11 @@ export default function ProjectsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
+            {campaigns.map((campaign) => (
               <ProjectCard
-                key={project.id}
-                project={project}
-                onFund={handleFundProject}
+                key={campaign.id}
+                project={campaign}
+                onFund={handleFundCampaign}
               />
             ))}
           </div>
@@ -77,7 +94,7 @@ export default function ProjectsPage() {
 
       {/* Fund Dialog */}
       <FundProjectDialog
-        project={selectedProject}
+        campaign={selectedCampaign}
         open={showFundDialog}
         onOpenChange={setShowFundDialog}
         onSuccess={handleFundSuccess}

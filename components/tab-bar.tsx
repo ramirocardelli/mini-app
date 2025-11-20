@@ -16,15 +16,15 @@ export function TabBar() {
   };
 
   const isProfileActive = () => {
-    return pathname === '/projects/me' || pathname.startsWith('/projects/me/');
+    return pathname === '/campaigns/me' || pathname.startsWith('/campaigns/me/');
   };
 
   const isExploreActive = () => {
-    if (pathname === '/projects') return true;
+    if (pathname === '/campaigns') return true;
     if (isProfileActive()) return false;
     if (pathname.includes('/new')) return false;
-    // Activo en rutas como /projects/[id]
-    return pathname.startsWith('/projects/') && pathname.split('/').length === 3;
+    // Activo en rutas como /campaigns/[id]
+    return pathname.startsWith('/campaigns/') && pathname.split('/').length === 3;
   };
 
   return (
@@ -50,7 +50,7 @@ export function TabBar() {
 
           {/* Explorar */}
           <Link 
-            href="/projects"
+            href="/campaigns"
             className={cn(
               "flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors relative",
               isExploreActive()
@@ -97,7 +97,7 @@ export function TabBar() {
 
           {/* Perfil */}
           <Link 
-            href="/projects/me"
+            href="/campaigns/me"
             className={cn(
               "flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors relative",
               isProfileActive()

@@ -4,7 +4,7 @@
 export class User {
   constructor(
     public readonly id: string,
-    public wallet: string,
+    public walletAddress: string,
     public username: string,
     public readonly createdAt: Date,
     public readonly updatedAt: Date
@@ -14,7 +14,7 @@ export class User {
    * Business logic: Validate user data
    */
   validate(): void {
-    if (!this.wallet || this.wallet.trim().length === 0) {
+    if (!this.walletAddress || this.walletAddress.trim().length === 0) {
       throw new Error('Wallet address is required');
     }
     if (!this.username || this.username.trim().length < 3) {
@@ -31,7 +31,7 @@ export class User {
   toJSON() {
     return {
       id: this.id,
-      wallet: this.wallet,
+      walletAddress: this.walletAddress,
       username: this.username,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

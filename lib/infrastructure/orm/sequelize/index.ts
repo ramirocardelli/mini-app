@@ -7,20 +7,24 @@ import { getSequelizeInstance, testConnection, syncDatabase } from './config';
 
 // Import models to ensure they are initialized
 import UserModel from './models/UserModel';
-import BeneficiaryModel from './models/BeneficiaryModel';
 import CampaignModel from './models/CampaignModel';
-import ProjectModel from './models/ProjectModel';
 import DonationModel from './models/DonationModel';
-import DonationProjectModel from './models/DonationProjectModel';
+import StakingModel from './models/StakingModel';
+import RefundModel from './models/RefundModel';
+import DonorDAOModel from './models/DonorDAOModel';
+import DonorDAOMemberModel from './models/DonorDAOMemberModel';
+import DAOVoteModel from './models/DAOVoteModel';
 
 // Export models
 export {
   UserModel,
-  BeneficiaryModel,
   CampaignModel,
-  ProjectModel,
   DonationModel,
-  DonationProjectModel,
+  StakingModel,
+  RefundModel,
+  DonorDAOModel,
+  DonorDAOMemberModel,
+  DAOVoteModel,
 };
 
 // Export configuration functions
@@ -29,11 +33,13 @@ export { getSequelizeInstance, testConnection, syncDatabase };
 // Export all models as a single object
 export const models = {
   User: UserModel,
-  Beneficiary: BeneficiaryModel,
   Campaign: CampaignModel,
-  Project: ProjectModel,
   Donation: DonationModel,
-  DonationProject: DonationProjectModel,
+  Staking: StakingModel,
+  Refund: RefundModel,
+  DonorDAO: DonorDAOModel,
+  DonorDAOMember: DonorDAOMemberModel,
+  DAOVote: DAOVoteModel,
 };
 
 export default models;

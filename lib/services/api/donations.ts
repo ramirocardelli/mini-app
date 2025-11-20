@@ -43,7 +43,8 @@ export const donationsApi = {
   async create(data: {
     userId: string;
     campaignId: string;
-    amountWei: string;
+    amount: number;
+    token: string;
     paymentId: string;
   }) {
     const response = await fetch(API_BASE, {

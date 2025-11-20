@@ -6,7 +6,7 @@ import { getSequelizeInstance } from '../config';
  */
 export interface UserAttributes {
   id: string;
-  wallet: string;
+  walletAddress: string;
   username: string;
   createdAt: Date;
   updatedAt: Date;
@@ -26,7 +26,7 @@ export class UserModel
   implements UserAttributes
 {
   declare id: string;
-  declare wallet: string;
+  declare walletAddress: string;
   declare username: string;
   declare createdAt: Date;
   declare updatedAt: Date;
@@ -41,7 +41,7 @@ UserModel.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    wallet: {
+    walletAddress: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,

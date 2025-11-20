@@ -32,12 +32,13 @@ export class CampaignRepository
       model.title,
       model.description,
       Number(model.goalAmount),
-      model.goalCurrency,
+      model.goalToken,
       Number(model.currentAmount),
       model.status as CampaignStatus,
       model.imageUrl,
       model.startDate,
       model.endDate,
+      model.createdBy,
       model.createdAt,
       model.updatedAt
     );
@@ -51,13 +52,30 @@ export class CampaignRepository
       title: entity.title,
       description: entity.description,
       goalAmount: entity.goalAmount,
-      goalCurrency: entity.goalCurrency,
+      goalToken: entity.goalToken,
       currentAmount: entity.currentAmount,
       status: entity.status,
       imageUrl: entity.imageUrl,
       startDate: entity.startDate,
       endDate: entity.endDate,
+      createdBy: entity.createdBy,
     };
+  }
+
+  /**
+   * Find campaigns by creator ID
+   */
+  async findByCreatorId(creatorId: string): Promise<Campaign[]> {
+    const models = await this.model.findAll({ where: { createdBy: creatorId } });
+    return models.map((model) => this.toDomain(model));
+  }
+
+  /**
+   * Find campaigns by status
+   */
+  async findByStatus(status: string): Promise<Campaign[]> {
+    const models = await this.model.findAll({ where: { status } });
+    return models.map((model) => this.toDomain(model));
   }
 }
 

@@ -7,7 +7,7 @@ export default function NewProjectPage() {
   const router = useRouter();
 
   const handleSuccess = () => {
-    router.push('/projects');
+    router.push('/campaigns');
   };
 
   return (
@@ -16,7 +16,7 @@ export default function NewProjectPage() {
           <div className="max-w-2xl mx-auto">
             <CreateProjectForm
               onSuccess={handleSuccess}
-              onCancel={() => router.push('/projects')}
+              onCancel={() => router.push('/campaigns')}
             />
           </div>
         </main>

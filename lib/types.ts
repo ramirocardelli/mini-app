@@ -1,4 +1,4 @@
-export interface Project {
+export interface Campaign {
   id: string;
   title: string;
   description: string;
@@ -12,7 +12,7 @@ export interface Project {
 
 export interface Donation {
   id: string;
-  projectId: string;
+  campaignId: string;
   amount: number;
   donorAddress: string;
   timestamp: Date;

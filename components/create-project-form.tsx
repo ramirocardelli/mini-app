@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Spinner } from '@/components/ui/spinner';
+import { authenticate, TransactionResult } from '@/lib/lemon-sdk-mock';
 
 interface CreateProjectFormProps {
   onSuccess: () => void;
@@ -22,7 +23,7 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
     title: '',
     description: '',
     goalAmount: '',
-    goalCurrency: 'USD',
+    goalToken: 'USDC',
     imageUrl: '',
     startDate: '',
     endDate: '',
@@ -82,12 +83,50 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
         }
       }
 
+      // Autenticar para obtener la wallet del usuario
+      const authResult = await authenticate();
+      
+      if (authResult.result !== TransactionResult.SUCCESS || !authResult.data) {
+        toast({
+          title: 'Autenticación Fallida',
+          description: 'No se pudo autenticar tu billetera. Por favor intentá nuevamente.',
+          variant: 'destructive',
+        });
+        setLoading(false);
+        return;
+      }
+      
+      const walletAddress = authResult.data.wallet;
+
+      // Obtener o crear usuario
+      let userId: string;
+      try {
+        const userResponse = await axios.post('/api/users/by-wallet', {
+          walletAddress,
+        });
+        
+        if (userResponse.data.success) {
+          userId = userResponse.data.data.id;
+        } else {
+          throw new Error('Failed to get/create user');
+        }
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'No se pudo procesar tu usuario. Por favor intentá nuevamente.',
+          variant: 'destructive',
+        });
+        setLoading(false);
+        return;
+      }
+
       // Crear campaña usando el API endpoint
       const payload = {
         title: formData.title,
         description: formData.description,
         goalAmount,
-        goalCurrency: formData.goalCurrency,
+        goalToken: formData.goalToken,
+        createdBy: userId,
         imageUrl: formData.imageUrl || null,
         startDate: formData.startDate || null,
         endDate: formData.endDate || null,
@@ -180,15 +219,19 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="goalCurrency" className="text-foreground">Moneda *</Label>
-              <Input
-                id="goalCurrency"
-                value={formData.goalCurrency}
-                onChange={(e) => setFormData({ ...formData, goalCurrency: e.target.value })}
-                placeholder="USD"
-                className="bg-input text-foreground border-border"
+              <Label htmlFor="goalToken" className="text-foreground">Token *</Label>
+              <select
+                id="goalToken"
+                value={formData.goalToken}
+                onChange={(e) => setFormData({ ...formData, goalToken: e.target.value })}
+                className="flex h-10 w-full rounded-md border border-border bg-input px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
-              />
+              >
+                <option value="USDC">USDC</option>
+                <option value="USDT">USDT</option>
+                <option value="DAI">DAI</option>
+                <option value="ETH">ETH</option>
+              </select>
             </div>
           </div>
 

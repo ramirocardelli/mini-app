@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, campaignId, amountWei, paymentId } = body;
+    const { userId, campaignId, amount, token, paymentId } = body;
 
     // Validaciones
     if (!userId || userId.trim().length === 0) {
@@ -63,8 +63,11 @@ export async function POST(request: NextRequest) {
     if (!campaignId || campaignId.trim().length === 0) {
       throw new ValidationError('Campaign ID is required');
     }
-    if (!amountWei || amountWei === '0') {
+    if (!amount || amount <= 0) {
       throw new ValidationError('Amount must be greater than 0');
+    }
+    if (!token || token.trim().length === 0) {
+      throw new ValidationError('Token is required');
     }
     if (!paymentId || paymentId.trim().length === 0) {
       throw new ValidationError('Payment ID is required');
@@ -86,11 +89,23 @@ export async function POST(request: NextRequest) {
     const donation = await repositories.donationRepository.create({
       userId,
       campaignId,
-      amountWei,
+      amount,
+      token,
       paymentId,
       status: DonationStatus.PENDING,
       txHash: null,
     } as any);
+
+    // Actualizar el currentAmount de la campaña
+    try {
+      const updatedCurrentAmount = campaign.currentAmount + amount;
+      await repositories.campaignRepository.update(campaignId, {
+        currentAmount: updatedCurrentAmount,
+      } as any);
+    } catch (updateError) {
+      console.error('Error updating campaign amount:', updateError);
+      // No lanzamos error para no bloquear la creación de la donación
+    }
 
     return NextResponse.json(
       {

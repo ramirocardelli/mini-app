@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FundProjectDialog } from '@/components/fund-project-dialog';
 import { ShareButton } from '@/components/share-button';
-import { Project } from '@/lib/types';
-import { getProjectById } from '@/lib/storage';
+import { Campaign } from '@/lib/types';
+import { campaignsApi } from '@/lib/services/api/campaigns';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
@@ -17,24 +17,35 @@ import { AlertCircle, TrendingUp, Calendar, User } from 'lucide-react';
 export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const projectId = params.id as string;
+  const campaignId = params.id as string;
   
-  const [project, setProject] = useState<Project | null>(null);
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [showFundDialog, setShowFundDialog] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadProject();
-  }, [projectId]);
+    loadCampaign();
+  }, [campaignId]);
 
-  const loadProject = () => {
-    const foundProject = getProjectById(projectId);
-    setProject(foundProject || null);
-    setLoading(false);
+  const loadCampaign = async () => {
+    try {
+      setLoading(true);
+      const response = await campaignsApi.getById(campaignId);
+      if (response.success && response.data) {
+        setCampaign(response.data);
+      } else {
+        setCampaign(null);
+      }
+    } catch (error) {
+      console.error('Error loading campaign:', error);
+      setCampaign(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFundSuccess = () => {
-    loadProject();
+    loadCampaign();
   };
 
   if (loading) {
@@ -50,7 +61,7 @@ export default function ProjectDetailPage() {
     );
   }
 
-  if (!project) {
+  if (!campaign) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4">
         <div className="max-w-md w-full space-y-4 text-center">
@@ -60,7 +71,7 @@ export default function ProjectDetailPage() {
               Campaña no encontrada
             </AlertDescription>
           </Alert>
-          <Link href="/projects">
+          <Link href="/campaigns">
             <Button className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90">
               Volver a Campañas
             </Button>
@@ -70,34 +81,34 @@ export default function ProjectDetailPage() {
     );
   }
 
-  const progress = (project.currentAmount / project.goalAmount) * 100;
-  const remaining = project.goalAmount - project.currentAmount;
+  const progress = (campaign.currentAmount / campaign.goalAmount) * 100;
+  const remaining = campaign.goalAmount - campaign.currentAmount;
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
 
     return (
       <div className="min-h-screen bg-background pb-24">
         <main className="px-4 pt-6">
-          {/* Project Header */}
+          {/* Campaign Header */}
           <div className="mb-8">
             <div className="flex items-start justify-between gap-4 mb-4">
               <h1 className="text-2xl font-bold text-foreground flex-1">
-                {project.title}
+                {campaign.title}
               </h1>
               <ShareButton 
                 url={currentUrl}
-                title={project.title}
-                description={project.description}
+                title={campaign.title}
+                description={campaign.description}
               />
             </div>
             
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-6">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span>{project.creatorName}</span>
+                <span>{campaign.creatorName}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>{new Date(project.createdAt).toLocaleDateString()}</span>
+                <span>{new Date(campaign.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
           </div>
@@ -118,14 +129,14 @@ export default function ProjectDetailPage() {
                 <div>
                   <p className="text-sm text-muted-foreground">Recaudado</p>
                   <div className="flex items-baseline gap-1">
-                    <p className="text-2xl font-bold">${project.currentAmount.toLocaleString('es-AR', { maximumFractionDigits: 0 })}</p>
+                    <p className="text-2xl font-bold">${campaign.currentAmount.toLocaleString('es-AR', { maximumFractionDigits: 0 })}</p>
                     <span className="text-sm text-muted-foreground">USDC</span>
                   </div>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Meta</p>
                   <div className="flex items-baseline gap-1">
-                    <p className="text-2xl font-bold">${project.goalAmount.toLocaleString('es-AR', { maximumFractionDigits: 0 })}</p>
+                    <p className="text-2xl font-bold">${campaign.goalAmount.toLocaleString('es-AR', { maximumFractionDigits: 0 })}</p>
                     <span className="text-sm text-muted-foreground">USDC</span>
                   </div>
                 </div>
@@ -154,7 +165,7 @@ export default function ProjectDetailPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground whitespace-pre-line">
-                {project.description}
+                {campaign.description}
               </p>
             </CardContent>
           </Card>
@@ -168,12 +179,12 @@ export default function ProjectDetailPage() {
               <div className="space-y-2">
                 <div>
                   <p className="text-sm text-muted-foreground">Nombre</p>
-                  <p className="font-medium">{project.creatorName}</p>
+                  <p className="font-medium">{campaign.creatorName}</p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Dirección</p>
                   <p className="font-mono text-sm break-all">
-                    {project.creatorAddress.slice(0, 6)}...{project.creatorAddress.slice(-4)}
+                    {campaign.creatorAddress.slice(0, 6)}...{campaign.creatorAddress.slice(-4)}
                   </p>
                 </div>
               </div>
@@ -183,7 +194,7 @@ export default function ProjectDetailPage() {
 
       {/* Fund Dialog */}
       <FundProjectDialog
-        project={project}
+        campaign={campaign}
         open={showFundDialog}
         onOpenChange={setShowFundDialog}
         onSuccess={handleFundSuccess}

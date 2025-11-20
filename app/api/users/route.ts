@@ -4,21 +4,21 @@ import { CustomError, ConflictError, ValidationError } from '@/lib/domain/errors
 
 /**
  * GET /api/users
- * Query params: ?wallet=xxx
+ * Query params: ?walletAddress=xxx
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const wallet = searchParams.get('wallet');
+    const walletAddress = searchParams.get('walletAddress');
 
-    if (wallet) {
-      const user = await repositories.userRepository.findByWallet(wallet);
+    if (walletAddress) {
+      const user = await repositories.userRepository.findByWallet(walletAddress);
       
       if (!user) {
         return NextResponse.json(
           {
             success: false,
-            error: `User with wallet ${wallet} not found`,
+            error: `User with wallet ${walletAddress} not found`,
             code: 'NOT_FOUND',
           },
           { status: 404 }
@@ -64,10 +64,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { wallet, username } = body;
+    const { walletAddress, username } = body;
 
     // Validaciones
-    if (!wallet || wallet.trim().length === 0) {
+    if (!walletAddress || walletAddress.trim().length === 0) {
       throw new ValidationError('Wallet address is required');
     }
     if (!username || username.trim().length < 3) {
@@ -75,14 +75,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar si el usuario ya existe
-    const existingUser = await repositories.userRepository.findByWallet(wallet);
+    const existingUser = await repositories.userRepository.findByWallet(walletAddress);
     if (existingUser) {
       throw new ConflictError('User with this wallet already exists');
     }
 
     // Crear usuario
     const user = await repositories.userRepository.create({
-      wallet,
+      walletAddress,
       username,
     } as any);
 

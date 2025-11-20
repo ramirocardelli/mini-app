@@ -1,44 +1,44 @@
-import { Project, Donation, UserProfile } from './types';
+import { Campaign, Donation, UserProfile } from './types';
 
-const PROJECTS_STORAGE_KEY = 'lemoncash_projects';
+const CAMPAIGNS_STORAGE_KEY = 'lemoncash_campaigns';
 const DONATIONS_STORAGE_KEY = 'lemoncash_donations';
 
-// Funciones para Proyectos/Campañas
-export function getProjects(): Project[] {
+// Funciones para Campañas
+export function getCampaigns(): Campaign[] {
   if (typeof window === 'undefined') return [];
   
-  const stored = localStorage.getItem(PROJECTS_STORAGE_KEY);
+  const stored = localStorage.getItem(CAMPAIGNS_STORAGE_KEY);
   if (!stored) return [];
   
   try {
-    const projects = JSON.parse(stored);
-    return projects.map((p: any) => ({
-      ...p,
-      createdAt: new Date(p.createdAt),
+    const campaigns = JSON.parse(stored);
+    return campaigns.map((c: any) => ({
+      ...c,
+      createdAt: new Date(c.createdAt),
     }));
   } catch {
     return [];
   }
 }
 
-export function saveProject(project: Project): void {
-  const projects = getProjects();
-  projects.push(project);
-  localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects));
+export function saveCampaign(campaign: Campaign): void {
+  const campaigns = getCampaigns();
+  campaigns.push(campaign);
+  localStorage.setItem(CAMPAIGNS_STORAGE_KEY, JSON.stringify(campaigns));
 }
 
-export function updateProject(projectId: string, updates: Partial<Project>): void {
-  const projects = getProjects();
-  const index = projects.findIndex(p => p.id === projectId);
+export function updateCampaign(campaignId: string, updates: Partial<Campaign>): void {
+  const campaigns = getCampaigns();
+  const index = campaigns.findIndex(c => c.id === campaignId);
   
   if (index !== -1) {
-    projects[index] = { ...projects[index], ...updates };
-    localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects));
+    campaigns[index] = { ...campaigns[index], ...updates };
+    localStorage.setItem(CAMPAIGNS_STORAGE_KEY, JSON.stringify(campaigns));
   }
 }
 
-export function getProjectById(id: string): Project | undefined {
-  return getProjects().find(p => p.id === id);
+export function getCampaignById(id: string): Campaign | undefined {
+  return getCampaigns().find(c => c.id === id);
 }
 
 // Funciones para Donaciones/Aportes
@@ -65,8 +65,8 @@ export function saveDonation(donation: Donation): void {
   localStorage.setItem(DONATIONS_STORAGE_KEY, JSON.stringify(donations));
 }
 
-export function getDonationsByProjectId(projectId: string): Donation[] {
-  return getDonations().filter(d => d.projectId === projectId);
+export function getDonationsByCampaignId(campaignId: string): Donation[] {
+  return getDonations().filter(d => d.campaignId === campaignId);
 }
 
 // Funciones para Perfil de Usuario

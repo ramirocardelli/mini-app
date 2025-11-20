@@ -4,30 +4,41 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ProjectCard } from '@/components/project-card';
 import { FundProjectDialog } from '@/components/fund-project-dialog';
-import { getProjects } from '@/lib/storage';
-import { Project } from '@/lib/types';
+import { campaignsApi } from '@/lib/services/api/campaigns';
+import { Campaign } from '@/lib/types';
 import { Heart } from 'lucide-react';
 
 export default function Home() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [showFundDialog, setShowFundDialog] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadProjects();
+    loadCampaigns();
   }, []);
 
-  const loadProjects = () => {
-    setProjects(getProjects());
+  const loadCampaigns = async () => {
+    try {
+      setLoading(true);
+      const response = await campaignsApi.getAll();
+      if (response.success) {
+        setCampaigns(response.data || []);
+      }
+    } catch (error) {
+      console.error('Error loading campaigns:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleFundProject = (project: Project) => {
-    setSelectedProject(project);
+  const handleFundCampaign = (campaign: Campaign) => {
+    setSelectedCampaign(campaign);
     setShowFundDialog(true);
   };
 
   const handleFundSuccess = () => {
-    loadProjects();
+    loadCampaigns();
   };
 
   return (
@@ -44,7 +55,13 @@ export default function Home() {
         </div>
 
         {/* Lista de Campañas */}
-        {projects.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-16 px-4">
+            <div className="bg-card border border-border rounded-2xl p-8 max-w-sm mx-auto">
+              <p className="text-sm text-muted-foreground">Cargando campañas...</p>
+            </div>
+          </div>
+        ) : campaigns.length === 0 ? (
           <div className="text-center py-16 px-4">
             <div className="bg-card border border-border rounded-2xl p-8 max-w-sm mx-auto">
               <div className="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
@@ -58,11 +75,11 @@ export default function Home() {
           </div>
         ) : (
           <div className="space-y-4">
-            {projects.map((project) => (
+            {campaigns.map((campaign) => (
               <ProjectCard
-                key={project.id}
-                project={project}
-                onFund={handleFundProject}
+                key={campaign.id}
+                project={campaign}
+                onFund={handleFundCampaign}
               />
             ))}
           </div>
@@ -71,7 +88,7 @@ export default function Home() {
 
       {/* Fund Dialog */}
       <FundProjectDialog
-        project={selectedProject}
+        campaign={selectedCampaign}
         open={showFundDialog}
         onOpenChange={setShowFundDialog}
         onSuccess={handleFundSuccess}

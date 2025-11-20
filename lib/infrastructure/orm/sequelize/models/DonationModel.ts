@@ -20,7 +20,8 @@ export interface DonationAttributes {
   id: string;
   userId: string;
   campaignId: string;
-  amountWei: string; // BigInt stored as string
+  amount: number;
+  token: string;
   paymentId: string;
   status: DonationStatus;
   txHash: string | null;
@@ -47,7 +48,8 @@ export class DonationModel
   declare id: string;
   declare userId: string;
   declare campaignId: string;
-  declare amountWei: string;
+  declare amount: number;
+  declare token: string;
   declare paymentId: string;
   declare status: DonationStatus;
   declare txHash: string | null;
@@ -80,8 +82,15 @@ DonationModel.init(
         key: 'id',
       },
     },
-    amountWei: {
-      type: DataTypes.STRING,
+    amount: {
+      type: DataTypes.DECIMAL(20, 2),
+      allowNull: false,
+      validate: {
+        min: 0,
+      },
+    },
+    token: {
+      type: DataTypes.STRING(10),
       allowNull: false,
       validate: {
         notEmpty: true,

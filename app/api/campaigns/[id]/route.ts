@@ -50,13 +50,13 @@ export async function PUT(
 ) {
   try {
     const body = await request.json();
-    const { title, description, goalAmount, goalCurrency, imageUrl, startDate, endDate, status } = body;
+    const { title, description, goalAmount, goalToken, imageUrl, startDate, endDate, status } = body;
 
     const campaign = await repositories.campaignRepository.update(params.id, {
       title,
       description,
       goalAmount,
-      goalCurrency,
+      goalToken,
       imageUrl,
       startDate,
       endDate,

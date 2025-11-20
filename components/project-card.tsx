@@ -1,6 +1,6 @@
 'use client';
 
-import { Project } from '@/lib/types';
+import { Campaign } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -8,8 +8,8 @@ import { ChevronRight, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 
 interface ProjectCardProps {
-  project: Project;
-  onFund: (project: Project) => void;
+  project: Campaign;
+  onFund: (campaign: Campaign) => void;
 }
 
 export function ProjectCard({ project, onFund }: ProjectCardProps) {
@@ -19,7 +19,7 @@ export function ProjectCard({ project, onFund }: ProjectCardProps) {
   return (
     <Card className="bg-card border border-border/50 hover:border-secondary/50 transition-all overflow-hidden">
       {/* Header clickeable para ver detalle */}
-      <Link href={`/projects/${project.id}`}>
+      <Link href={`/campaigns/${project.id}`}>
         <div className="p-4 pb-3 cursor-pointer hover:bg-muted/20 transition-colors">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">

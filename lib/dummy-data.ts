@@ -1,9 +1,9 @@
-import { Project, Donation, UserProfile } from './types';
+import { Campaign, Donation, UserProfile } from './types';
 
 /**
- * Genera datos dummy para campañas (proyectos)
+ * Genera datos dummy para campañas
  */
-export function generateDummyProjects(): Project[] {
+export function generateDummyCampaigns(): Campaign[] {
   const now = new Date();
   const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
   const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
@@ -104,7 +104,7 @@ export function generateDummyProjects(): Project[] {
 /**
  * Genera datos dummy para donaciones
  */
-export function generateDummyDonations(projectIds: string[]): Donation[] {
+export function generateDummyDonations(campaignIds: string[]): Donation[] {
   const now = new Date();
   const donations: Donation[] = [];
   
@@ -123,7 +123,7 @@ export function generateDummyDonations(projectIds: string[]): Donation[] {
   for (let i = 0; i < 15; i++) {
     const daysAgo = Math.floor(Math.random() * 30); // Últimos 30 días
     const timestamp = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
-    const projectId = projectIds[Math.floor(Math.random() * projectIds.length)];
+    const campaignId = campaignIds[Math.floor(Math.random() * campaignIds.length)];
     const amount = amounts[Math.floor(Math.random() * amounts.length)];
     // Hacer que aproximadamente 1/3 de las donaciones sean del usuario del perfil
     const donorAddress = i < 5 
@@ -132,7 +132,7 @@ export function generateDummyDonations(projectIds: string[]): Donation[] {
 
     donations.push({
       id: `donation_${i + 1}`,
-      projectId,
+      campaignId,
       amount,
       donorAddress,
       timestamp,
@@ -149,7 +149,7 @@ export function generateDummyDonations(projectIds: string[]): Donation[] {
 export function initializeDummyData(): void {
   if (typeof window === 'undefined') return;
 
-  const projectsKey = 'lemoncash_projects';
+  const campaignsKey = 'lemoncash_campaigns';
   const donationsKey = 'lemoncash_donations';
   const profileKey = 'lemoncash_user_profile';
   const initializedKey = 'lemoncash_dummy_initialized';
@@ -167,15 +167,15 @@ export function initializeDummyData(): void {
     return;
   }
 
-  // Verificar si ya hay proyectos reales
-  const existingProjects = localStorage.getItem(projectsKey);
-  if (existingProjects && JSON.parse(existingProjects).length > 0) {
-    // Si hay proyectos pero no hay donaciones, crear donaciones dummy
+  // Verificar si ya hay campañas reales
+  const existingCampaigns = localStorage.getItem(campaignsKey);
+  if (existingCampaigns && JSON.parse(existingCampaigns).length > 0) {
+    // Si hay campañas pero no hay donaciones, crear donaciones dummy
     const existingDonations = localStorage.getItem(donationsKey);
     if (!existingDonations || JSON.parse(existingDonations).length === 0) {
-      const projects = JSON.parse(existingProjects);
-      const projectIds = projects.map((p: any) => p.id);
-      const dummyDonations = generateDummyDonations(projectIds);
+      const campaigns = JSON.parse(existingCampaigns);
+      const campaignIds = campaigns.map((c: any) => c.id);
+      const dummyDonations = generateDummyDonations(campaignIds);
       localStorage.setItem(donationsKey, JSON.stringify(dummyDonations));
     }
     // Marcar como inicializado
@@ -183,13 +183,13 @@ export function initializeDummyData(): void {
     return;
   }
 
-  // Generar y guardar proyectos dummy
-  const dummyProjects = generateDummyProjects();
-  localStorage.setItem(projectsKey, JSON.stringify(dummyProjects));
+  // Generar y guardar campañas dummy
+  const dummyCampaigns = generateDummyCampaigns();
+  localStorage.setItem(campaignsKey, JSON.stringify(dummyCampaigns));
 
   // Generar y guardar donaciones dummy
-  const projectIds = dummyProjects.map(p => p.id);
-  const dummyDonations = generateDummyDonations(projectIds);
+  const campaignIds = dummyCampaigns.map(c => c.id);
+  const dummyDonations = generateDummyDonations(campaignIds);
   localStorage.setItem(donationsKey, JSON.stringify(dummyDonations));
 
   // Marcar como inicializado

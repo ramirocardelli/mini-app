@@ -16,7 +16,8 @@ export class Donation {
     public readonly id: string,
     public userId: string,
     public campaignId: string,
-    public amountWei: string, // BigInt as string
+    public amount: number,
+    public token: string,
     public paymentId: string,
     public status: DonationStatus,
     public txHash: string | null,
@@ -79,8 +80,11 @@ export class Donation {
     if (!this.campaignId || this.campaignId.trim().length === 0) {
       throw new Error('Campaign ID is required');
     }
-    if (!this.amountWei || this.amountWei === '0') {
+    if (!this.amount || this.amount <= 0) {
       throw new Error('Amount must be greater than 0');
+    }
+    if (!this.token || this.token.trim().length === 0) {
+      throw new Error('Token is required');
     }
     if (!this.paymentId || this.paymentId.trim().length === 0) {
       throw new Error('Payment ID is required');
@@ -95,7 +99,8 @@ export class Donation {
       id: this.id,
       userId: this.userId,
       campaignId: this.campaignId,
-      amountWei: this.amountWei,
+      amount: this.amount,
+      token: this.token,
       paymentId: this.paymentId,
       status: this.status,
       txHash: this.txHash,
