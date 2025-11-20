@@ -218,7 +218,9 @@ export default function ProjectDetailPage() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Dirección</p>
-                  <p className="font-mono text-sm">{project.creatorAddress}</p>
+                  <p className="font-mono text-sm break-all">
+                    {project.creatorAddress.slice(0, 6)}...{project.creatorAddress.slice(-4)}
+                  </p>
                 </div>
               </div>
             </CardContent>
