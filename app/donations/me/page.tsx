@@ -26,12 +26,12 @@ export default function MyDonationsPage() {
       try {
         const response = await lemonSDK.authenticate();
         
-        if (response.success) {
+        if (response.result === 'SUCCESS') {
           setAuthenticated(true);
           setAuthError(null);
           loadDonations();
         } else {
-          setAuthError(response.error || 'Authentication failed');
+          setAuthError(response.result || 'Authentication failed');
         }
       } catch (error) {
         setAuthError('Failed to connect to LemonCash. Please try again later.');

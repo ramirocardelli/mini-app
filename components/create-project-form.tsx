@@ -70,12 +70,14 @@ export function CreateProjectForm({ onSuccess, onCancel }: CreateProjectFormProp
 
       // Make initial deposit using Lemon SDK
       if (initialDeposit > 0) {
-        const paymentResponse = await lemonSDK.makePayment(initialDeposit, formData.creatorAddress);
+        const paymentResponse = await lemonSDK.deposit({
+          amount: initialDeposit.toString(),
+          tokenName: 'USDC',});
         
-        if (!paymentResponse.success) {
+        if (paymentResponse.result !== 'SUCCESS') {
           toast({
             title: 'Pago Fallido',
-            description: paymentResponse.error || 'No se pudo procesar el depósito inicial',
+            description: paymentResponse.result || 'No se pudo procesar el depósito inicial',
             variant: 'destructive',
           });
           setLoading(false);

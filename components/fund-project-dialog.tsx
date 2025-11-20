@@ -48,12 +48,17 @@ export function FundProjectDialog({ project, open, onOpenChange, onSuccess }: Fu
 
     try {
       // Process payment using Lemon SDK
-      const paymentResponse = await lemonSDK.makePayment(fundAmount, project.creatorAddress);
+      const paymentResponse = await lemonSDK.deposit(
+        {
+          amount: fundAmount.toString(),
+          tokenName: 'USDC',
+        }
+      );
 
-      if (!paymentResponse.success) {
+      if (paymentResponse.result !== 'SUCCESS') {
         toast({
           title: 'Payment Failed',
-          description: paymentResponse.error || 'Failed to process payment',
+          description: paymentResponse.result || 'Failed to process payment',
           variant: 'destructive',
         });
         setLoading(false);

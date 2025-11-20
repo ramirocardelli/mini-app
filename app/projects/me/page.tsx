@@ -36,7 +36,7 @@ export default function ProfilePage() {
       try {
         const response = await lemonSDK.authenticate();
         
-        if (response.success) {
+        if (response.result === 'SUCCESS') {
           setAuthenticated(true);
           setAuthError(null);
           // Recargar datos después de autenticación
@@ -46,7 +46,7 @@ export default function ProfilePage() {
             loadProfileData(updatedProfile);
           }
         } else {
-          setAuthError(response.error || 'Authentication failed');
+          setAuthError(response.result || 'Authentication failed');
         }
       } catch (error) {
         setAuthError('Failed to connect to LemonCash. Please try again later.');
