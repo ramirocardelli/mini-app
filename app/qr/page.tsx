@@ -34,24 +34,6 @@ export default function ScanQRPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="flex items-center gap-4 p-4 bg-card border-b border-border">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => router.back()}
-          className="text-foreground"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <div>
-          <h1 className="text-xl font-bold text-foreground">Escanear QR</h1>
-          <p className="text-xs text-muted-foreground">
-            Apuntá la cámara al código QR
-          </p>
-        </div>
-      </div>
-
       {/* Scanner */}
       <div className="relative h-[calc(100vh-80px)] bg-black">
         <Scanner
