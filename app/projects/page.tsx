@@ -65,8 +65,7 @@ export default function ProjectsPage() {
         <div className="text-center space-y-4">
           <Spinner className="h-12 w-12 text-secondary mx-auto" />
           <div>
-            <h2 className="text-xl font-semibold text-foreground">Connecting to LemonCash</h2>
-            <p className="text-sm text-muted-foreground mt-2">Authenticating your session...</p>
+            <h2 className="text-xl font-semibold text-foreground">Cargando</h2>
           </div>
         </div>
       </div>
