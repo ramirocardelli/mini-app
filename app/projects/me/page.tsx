@@ -287,31 +287,33 @@ export default function ProfilePage() {
           ) : (
             <div className="space-y-3">
               {myDonations.slice(0, 5).map((donation) => (
-                <Link key={donation.id} href={`/projects/${donation.projectId}`}>
-                  <Card className="bg-card border-border/50 hover:border-secondary/50 transition-colors">
-                    <CardContent className="pt-4 pb-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
-                            <Heart className="h-5 w-5 text-secondary" />
-                          </div>
-                          <div>
-                            <div className="flex items-baseline gap-1">
-                              <span className="text-base font-bold text-secondary">
-                                ${donation.amount.toFixed(0)}
-                              </span>
-                              <span className="text-xs text-muted-foreground">USDC</span>
+                <div key={donation.id}>
+                  <Link href={`/projects/${donation.projectId}`}>
+                    <Card className="bg-card border-border/50 hover:border-secondary/50 transition-colors">
+                      <CardContent className="pt-4 pb-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                              <Heart className="h-5 w-5 text-secondary" />
                             </div>
-                            <p className="text-xs text-muted-foreground">
-                              {new Date(donation.timestamp).toLocaleDateString('es-AR')}
-                            </p>
+                            <div>
+                              <div className="flex items-baseline gap-1">
+                                <span className="text-base font-bold text-secondary">
+                                  ${donation.amount.toFixed(0)}
+                                </span>
+                                <span className="text-xs text-muted-foreground">USDC</span>
+                              </div>
+                              <p className="text-xs text-muted-foreground">
+                                {new Date(donation.timestamp).toLocaleDateString('es-AR')}
+                              </p>
+                            </div>
                           </div>
+                          <LinkIcon className="h-5 w-5 text-muted-foreground" />
                         </div>
-                        <LinkIcon className="h-5 w-5 text-muted-foreground" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </div>
               ))}
             </div>
           )}
