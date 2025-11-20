@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FundProjectDialog } from '@/components/fund-project-dialog';
+import { ShareButton } from '@/components/share-button';
 import { Project } from '@/lib/types';
 import { getProjectById } from '@/lib/storage';
 import { initializeDummyData } from '@/lib/dummy-data';
@@ -117,15 +118,23 @@ export default function ProjectDetailPage() {
 
   const progress = (project.currentAmount / project.goalAmount) * 100;
   const remaining = project.goalAmount - project.currentAmount;
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
 
     return (
       <div className="min-h-screen bg-background pb-24">
         <main className="px-4 pt-6">
           {/* Project Header */}
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-foreground mb-4">
-              {project.title}
-            </h1>
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <h1 className="text-2xl font-bold text-foreground flex-1">
+                {project.title}
+              </h1>
+              <ShareButton 
+                url={currentUrl}
+                title={project.title}
+                description={project.description}
+              />
+            </div>
             
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-6">
               <div className="flex items-center gap-2">

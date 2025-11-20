@@ -66,12 +66,9 @@ export function TabBar() {
           </Link>
 
           {/* QR Scanner - Botón Central estilo Lemon */}
-          <button 
+          <Link 
             className="flex flex-col items-center justify-center flex-1 h-full relative -mt-1"
-            onClick={() => {
-              // TODO: Implementar scanner QR para campañas
-              console.log('QR Scanner - Coming soon');
-            }}
+            href="/qr"
           >
             <div className="w-[56px] h-[56px] rounded-full bg-secondary flex items-center justify-center shadow-lg relative -top-1">
               <div className="w-[52px] h-[52px] rounded-full bg-secondary flex items-center justify-center border-4 border-background relative">
@@ -79,7 +76,7 @@ export function TabBar() {
                 <Heart className="h-[18px] w-[18px] text-black absolute" fill="black" stroke="none" />
               </div>
             </div>
-          </button>
+          </Link>
 
           {/* Mis Aportes */}
           <Link 
